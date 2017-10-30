@@ -1,8 +1,8 @@
 {
-  "name": "angular-signalr-core-hubs",
+  "name": "angular-signalr-core-hub",
   "description": "A SignalR Core compatible reimplementation of `angular-signalr-hubs",
   "version": "1.0.0-alpha2-final",
-  "main": "index.js",
+  "main": "hub.js",
   "devDependencies": {
     "@aspnet/signalr-client": "^1.0.0-alpha2-final",
     "gulp": "^3.9.1",
@@ -19,13 +19,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/FabioGusmao/angular-signalr-core-hubs.git"
+    "url": "https://github.com/fabiogusmao/angular-signalr-core-hub"
   },
   "keywords": [
     "aspnetcore",
-    "signalr"
+    "signalr",
+    "angular"
   ],
   "author": "fabio.gusmao@qx3.com.br",
   "license": "MIT",
-  "homepage": "https://bitbucket.org/FabioGusmao/angular-signalr-core-hubs"
+  "homepage": "https://github.com/fabiogusmao/angular-signalr-core-hub"
 }

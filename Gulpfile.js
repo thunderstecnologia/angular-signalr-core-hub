@@ -8,9 +8,9 @@ const rename = require('gulp-rename');
 const uglify = require('gulp-uglify');
 
 const paths = {
-    mainFile: 'angular-signalr-core-hubs.js',
-    mainPath: 'dist/angular-signalr-core-hubs.js',
-    minFile: 'angular-signalr-core-hubs.min.js',
+    mainFile: 'angular-signalr-core-hub.js',
+    mainPath: 'dist/angular-signalr-core-hub.js',
+    minFile: 'angular-signalr-core-hub.min.js',
 };
 
 
@@ -18,7 +18,7 @@ gulp.task('clean', () => {
     return gulp.src('dist').pipe(clean());
 });
 gulp.task('build', ['clean'], () => {
-    return gulp.src(['node_modules/@aspnet/signalr-client/dist/browser/signalr-clientES5-*[!min].js', 'hubs.js'])
+    return gulp.src(['node_modules/@aspnet/signalr-client/dist/browser/signalr-clientES5-*[!min].js', 'hub.js'])
             .pipe(debug())
             .pipe(concat(paths.mainFile))
             .pipe(gulp.dest('dist'));
