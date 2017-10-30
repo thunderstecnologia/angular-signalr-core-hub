@@ -1,7 +1,7 @@
 {
   "name": "angular-signalr-core-hubs",
   "description": "npm install angular-signalr-core-hubs",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha2-final",
   "main": "index.js",
   "devDependencies": {
     "@aspnet/signalr-client": "^1.0.0-alpha2-final",
