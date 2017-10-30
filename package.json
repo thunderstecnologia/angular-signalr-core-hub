@@ -1,6 +1,6 @@
 {
   "name": "angular-signalr-core-hubs",
-  "description": "npm install angular-signalr-core-hubs",
+  "description": "A SignalR Core compatible reimplementation of `angular-signalr-hubs",
   "version": "1.0.0-alpha2-final",
   "main": "index.js",
   "devDependencies": {
