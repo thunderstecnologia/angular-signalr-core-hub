@@ -4630,7 +4630,7 @@ if (hadRuntime) {
 
 },{}]},{},[6])(6)
 });
-angular.module('SignalR', []).factory('Hub', function () {
+angular.module('SignalR', []).factory('Hub', function ($q, $timeout) {
     var Hub = function (hubName, options) {
         /* globals signalR */
         var me = this;
@@ -4649,62 +4649,87 @@ angular.module('SignalR', []).factory('Hub', function () {
             console.log('Hub', hubName, 'url', hubUrl);
             return hubUrl;
         }
-
+        var previousState = null;
         function createState(newState) {
-            return {
+            var state = {
+                oldState: previousState,
                 newState: newState
             };
+            oldState = newState;
+            return state;
         }
         function callServerMethod(method) {
 
-            return function (params) {
+            return function () {
                 console.log('Chamando método ' + method);
-                connection.send(method, params);
+
+                var params = Array.prototype.slice.call(arguments);
+                params = [method].concat(params);
+
+                return connection.send.apply( connection, params);
             };
+        }
+
+        function callStateChanged(newState) {
+            if (options.stateChanged) {
+                var state = createState(newState);
+                options.stateChanged(state);
+            }
         }
 
 
         var connection = new signalR.HubConnection(buildHubUrl());
         this.connection = connection;
 
-        options.methods.map(function (methodName) {
-            var call = new callServerMethod(methodName);
-            me[methodName] = call;
-        });
+        if (options.methods)
+            options.methods.map(function (methodName) {
+                var call = new callServerMethod(methodName);
+                me[methodName] = call;
+            });
 
-        for (var key in options.listeners) {
-            if (options.listeners.hasOwnProperty(key)) {
-                var clientMethod = options.listeners[key];
-                connection.on(key, clientMethod);
+        if (options.listeners)
+            for (var key in options.listeners) {
+                if (options.listeners.hasOwnProperty(key)) {
+                    var clientMethod = options.listeners[key];
+                    connection.on(key, clientMethod);
+                }
             }
-        }
 
-        connection.onclose(function () {
-            var state = createState(Hub.connectionStates.disconnected);
-            options.stateChanged(state);
+        connection.onclose(function (error) {
+            console.log('Connection Closed', hubName, error);
+            callStateChanged(Hub.connectionStates.disconnected);
         });
 
         this.start = function () {
-            connection.start().then(function () {
-                var state = createState(Hub.connectionStates.connected);
-                options.stateChanged(state);
+            console.log('Connection State', hubName, connection.connection.connectionState);
+            
+            return connection.start().then(function () {
+                callStateChanged(Hub.connectionStates.connected);
+            }, function (err) {
+                throw err;
             });
         };
 
-        this.on = function(method, handler){
+        this.isConnected = function(){
+            return connection.connection.connectionState === 2;
+        }
+
+
+
+        this.on = function (method, handler) {
             connection.on(method, handler);
         }
-        this.off = function(method, handler){
+        this.off = function (method, handler) {
             connection.off(method, handler);
         }
 
-        this.send = function(name, params){
-            connection.send(name, params);
+        this.invoke = function (name, params) {
+            return connection.invoke(name, params);
         }
-        
 
 
-        this.start();
+
+        //this.start();
     };
 
     Hub.connectionStates = {
@@ -4714,6 +4739,8 @@ angular.module('SignalR', []).factory('Hub', function () {
         reconnecting: 'reconnecting',
         disconnected: 'disconnected'
     };
+    return function (hubName, options) {
+        return new Hub(hubName, options);
+    };
 
-    return Hub;
 });
