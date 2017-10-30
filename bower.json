@@ -1,7 +1,7 @@
 {
   "name": "angular-signalr-core-hub",
   "authors": [
-    "Fábio Gusmão <fabio.gusmao@qx3.com.br>"
+    "Fábio Gusmão <fabio.gusmao@gmail.com>"
   ],
   "description": "A SignalR Core compatible reimplementation of `angular-signalr-hubs`.",
   "main": "dist/angular-signalr-core-hub.js",
