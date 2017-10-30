@@ -2,7 +2,7 @@
 
 ## Bower
 
-    npm install angular-signalr-core-hubs
+    bower install angular-signalr-core-hubs
 
 
 # Frequently Asked Questions
