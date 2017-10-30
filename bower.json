@@ -1,0 +1,26 @@
+{
+  "name": "angular-signalr-core-hubs",
+  "authors": [
+    "Fábio Gusmão <fabio.gusmao@qx3.com.br>"
+  ],
+  "description": "A SignalR Core compatible reimplementation of `angular-signalr-hubs`.",
+  "main": "dist/angular-signalr-core-hubs.js",
+  "keywords": [
+    "angular",
+    "signalr",
+    "signalr-core",
+    "aspnet"
+  ],
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/FabioGusmao/angular-signalr-core-hubs",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.3.0"
+  }
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SignalR Core Test Page</title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="dist/angular-signalr-core-hubs.min.js"></script>
+
+    <style type="text/css">
+    
+        p.ok, p.not-ok {
+            margin: 20px;
+            padding: 40px;
+            text-align: center;
+            font-size: 2em;
+            font-family: Helvetica, Arial, Sans-Serif;
+        }
+       
+        p.not-ok {
+            background-color: red;
+            color: #fff;
+        }
+
+        p.ok {
+            background-color: green;
+            color: #000;
+        }
+    
+    </style>
+</head>
+
+<body ng-app="test">
+    
+    <p class="not-ok" ng-bind="message" ng-class="{ok: ok}">Something went wrong.... Please check your browser's console!</p>
+
+    <script>
+        angular.module('test', ['SignalR']).run(function (Hub, $rootScope) {        
+            $rootScope.ok = true;    
+            $rootScope.message = 'Everything is OK!';
+        });
+    </script>
+</body>
+
+</html>
