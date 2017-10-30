@@ -35,17 +35,19 @@ angular.module('SignalR', []).factory('Hub', function () {
         var connection = new signalR.HubConnection(buildHubUrl());
         this.connection = connection;
 
-        options.methods.map(function (methodName) {
-            var call = new callServerMethod(methodName);
-            me[methodName] = call;
-        });
+        if (options.methods)
+            options.methods.map(function (methodName) {
+                var call = new callServerMethod(methodName);
+                me[methodName] = call;
+            });
 
-        for (var key in options.listeners) {
-            if (options.listeners.hasOwnProperty(key)) {
-                var clientMethod = options.listeners[key];
-                connection.on(key, clientMethod);
+        if (options.listeners)
+            for (var key in options.listeners) {
+                if (options.listeners.hasOwnProperty(key)) {
+                    var clientMethod = options.listeners[key];
+                    connection.on(key, clientMethod);
+                }
             }
-        }
 
         connection.onclose(function () {
             var state = createState(Hub.connectionStates.disconnected);
@@ -59,17 +61,17 @@ angular.module('SignalR', []).factory('Hub', function () {
             });
         };
 
-        this.on = function(method, handler){
+        this.on = function (method, handler) {
             connection.on(method, handler);
         }
-        this.off = function(method, handler){
+        this.off = function (method, handler) {
             connection.off(method, handler);
         }
 
-        this.send = function(name, params){
+        this.send = function (name, params) {
             return connection.send(name, params);
         }
-        
+
 
 
         this.start();
