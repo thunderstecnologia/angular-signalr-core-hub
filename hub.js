@@ -33,6 +33,7 @@ angular.module('SignalR', []).factory('Hub', function () {
 
 
         var connection = new signalR.HubConnection(buildHubUrl());
+        this.connection = connection;
 
         options.methods.map(function (methodName) {
             var call = new callServerMethod(methodName);
@@ -57,13 +58,27 @@ angular.module('SignalR', []).factory('Hub', function () {
                 options.stateChanged(state);
             });
         };
+
+        this.on = function(method, handler){
+            connection.on(method, handler);
+        }
+        this.off = function(method, handler){
+            connection.off(method, handler);
+        }
+
+        this.send = function(name, params){
+            return connection.send(name, params);
+        }
+        
+
+
         this.start();
     };
 
     Hub.connectionStates = {
         connecting: 'connecting',
         connected: 'connected',
-        // TODO: tratar reconexões
+        // TODO: handle reconnections
         reconnecting: 'reconnecting',
         disconnected: 'disconnected'
     };
