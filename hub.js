@@ -39,13 +39,12 @@ angular.module('SignalR', []).factory('Hub', function ($q, $log, $timeout) {
         }
 
         function callStateChanged(newState) {
+            $log.log('Hub ' + hubName + ' changed from "' + previousState + '" to "' + newState + '"');
             if (options.stateChanged) {
                 var state = createState(newState);
                 options.stateChanged(state);
                 if (stopRequested)
                     stopRequested = false;
-
-                $log.log('Hub ' + hubName + ' changed from "' + previousState + '" to "' + newState + '"');
 
                 if (newState === Hub.connectionStates.disconnected) {
                     if (options.autoReconnect) {
