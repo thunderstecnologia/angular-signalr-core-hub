@@ -11,7 +11,7 @@ We may provide a demo anytime soon :)
 
 ## Is this a fork of [angular-signalr-hub](https://github.com/JustMaier/angular-signalr-hub)?
 
-No. This is inspired by `angular-signalr-hub` in order to make thins easier for people who used it in the past and want to migrate to the new [ASP.NET Core SignalR Client SDK](https://github.com/aspnet/SignalR/tree/dev/client-ts).
+No. This is inspired by `angular-signalr-hub` in order to make things easier for people who used it in the past and want to migrate to the new [ASP.NET Core SignalR Client SDK](https://github.com/aspnet/SignalR/tree/dev/client-ts).
 
 ## The new ASP.NET Core SignalR SDK does not provide a Bower package. Does this package include it?
 
