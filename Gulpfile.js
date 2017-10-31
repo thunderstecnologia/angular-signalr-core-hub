@@ -35,4 +35,6 @@ gulp.task('webserver', ['build-min'], () => {
     return connect.server({
         index: 'test_page.html'
     });
-})
+});
+
+gulp.task('default', ['build-min']);

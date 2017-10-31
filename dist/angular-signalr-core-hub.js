@@ -4630,9 +4630,8 @@ if (hadRuntime) {
 
 },{}]},{},[6])(6)
 });
-angular.module('SignalR', []).factory('Hub', function ($q, $timeout) {
+angular.module('SignalR', []).factory('Hub', function ($q, $log, $timeout) {
     var Hub = function (hubName, options) {
-        /* globals signalR */
         var me = this;
         function buildHubUrl() {
             var hubUrl = options.rootPath + '/' + hubName;
@@ -4645,8 +4644,7 @@ angular.module('SignalR', []).factory('Hub', function ($q, $timeout) {
             }
 
             hubUrl += '?' + queryArray.join('&');
-
-            console.log('Hub', hubName, 'url', hubUrl);
+            $log.debug('Hub', hubName, 'url', hubUrl);
             return hubUrl;
         }
         var previousState = null;
@@ -4661,7 +4659,7 @@ angular.module('SignalR', []).factory('Hub', function ($q, $timeout) {
         function callServerMethod(method) {
 
             return function () {
-                console.log('Chamando método ' + method);
+                $log.debug(hubName, 'Calling method ' + method);
 
                 var params = Array.prototype.slice.call(arguments);
                 params = [method].concat(params);
@@ -4696,13 +4694,13 @@ angular.module('SignalR', []).factory('Hub', function ($q, $timeout) {
             }
 
         connection.onclose(function (error) {
-            console.log('Connection Closed', hubName, error);
+            $log.log('Connection Closed', hubName);
+            if(error)
+                $log.error(error);
             callStateChanged(Hub.connectionStates.disconnected);
         });
 
         this.start = function () {
-            console.log('Connection State', hubName, connection.connection.connectionState);
-            
             return connection.start().then(function () {
                 callStateChanged(Hub.connectionStates.connected);
             }, function (err) {
@@ -4713,23 +4711,12 @@ angular.module('SignalR', []).factory('Hub', function ($q, $timeout) {
         this.isConnected = function(){
             return connection.connection.connectionState === 2;
         }
-
-
-
         this.on = function (method, handler) {
             connection.on(method, handler);
         }
         this.off = function (method, handler) {
             connection.off(method, handler);
         }
-
-        this.invoke = function (name, params) {
-            return connection.invoke(name, params);
-        }
-
-
-
-        //this.start();
     };
 
     Hub.connectionStates = {
