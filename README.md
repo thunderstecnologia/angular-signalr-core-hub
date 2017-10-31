@@ -17,6 +17,10 @@ No. This is inspired by `angular-signalr-hubs` in order to make thins easier for
 
 Yes. This may be dropped in future releases if the ASP.NET Core team provides this kind of package.
 
+## What are the changes from SignalR 2 to SignalR Core?
+
+See [Announcing SignalR (alpha) for ASP.NET Core 2.0](https://blogs.msdn.microsoft.com/webdev/2017/09/14/announcing-signalr-for-asp-net-core-2-0/) for more information.
+
 ## What are the changes from `angular-signalr-hub`?
 
 * jQuery (`$`) is no longer needed / used. This was necessary in order to access `$.signalR` but the new SDK does not rely on jQuery at all.
