@@ -4726,8 +4726,5 @@ angular.module('SignalR', []).factory('Hub', function ($q, $log, $timeout) {
         reconnecting: 'reconnecting',
         disconnected: 'disconnected'
     };
-    return function (hubName, options) {
-        return new Hub(hubName, options);
-    };
-
+   return Hub;
 });
