@@ -9,7 +9,7 @@ We may provide a demo anytime soon :)
 
 # Frequently Asked Questions
 
-## Is this a fork of [angular-signalr-hubs](https://github.com/JustMaier/angular-signalr-hub)?
+## Is this a fork of [angular-signalr-hub](https://github.com/JustMaier/angular-signalr-hub)?
 
 No. This is inspired by `angular-signalr-hubs` in order to make thins easier for people who used it in the past and want to migrate to the new [ASP.NET Core SignalR Client SDK](https://github.com/aspnet/SignalR/tree/dev/client-ts).
 
