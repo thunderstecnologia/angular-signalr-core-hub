@@ -4631,6 +4631,7 @@ if (hadRuntime) {
 },{}]},{},[6])(6)
 });
 angular.module('SignalR', []).factory('Hub', function ($q, $log, $timeout) {
+    "use strict";
     var Hub = function (hubName, options) {
         var me = this;
         function buildHubUrl() {
@@ -4653,7 +4654,8 @@ angular.module('SignalR', []).factory('Hub', function ($q, $log, $timeout) {
                 oldState: previousState,
                 newState: newState
             };
-            oldState = newState;
+            if (newState !== previousState)
+                previousState = newState;
             return state;
         }
         function callServerMethod(method) {
@@ -4664,7 +4666,7 @@ angular.module('SignalR', []).factory('Hub', function ($q, $log, $timeout) {
                 var params = Array.prototype.slice.call(arguments);
                 params = [method].concat(params);
 
-                return connection.send.apply( connection, params);
+                return connection.send.apply(connection, params);
             };
         }
 
@@ -4672,12 +4674,29 @@ angular.module('SignalR', []).factory('Hub', function ($q, $log, $timeout) {
             if (options.stateChanged) {
                 var state = createState(newState);
                 options.stateChanged(state);
+                if (stopRequested)
+                    stopRequested = false;
+
+                $log.log('Hub ' + hubName + ' changed from "' + previousState + '" to "' + newState + '"');
+
+                if (newState === Hub.connectionStates.disconnected) {
+                    if (options.autoReconnect) {
+                        state = createState(Hub.connectionStates.reconnecting);
+                        options.stateChanged(state);
+                        $timeout(function () {
+                            me.start();
+                        }, options.reconnectTimeout || 1000);
+
+                    }
+                }
             }
         }
 
 
-        var connection = new signalR.HubConnection(buildHubUrl());
-        this.connection = connection;
+        var connection = null;
+        var onOffList = [];
+        var stopRequested = false;
+
 
         if (options.methods)
             options.methods.map(function (methodName) {
@@ -4685,46 +4704,91 @@ angular.module('SignalR', []).factory('Hub', function ($q, $log, $timeout) {
                 me[methodName] = call;
             });
 
-        if (options.listeners)
-            for (var key in options.listeners) {
-                if (options.listeners.hasOwnProperty(key)) {
-                    var clientMethod = options.listeners[key];
-                    connection.on(key, clientMethod);
+        function bindListeners() {
+            if (options.listeners) {
+                for (var key in options.listeners) {
+                    if (options.listeners.hasOwnProperty(key)) {
+                        var clientMethod = options.listeners[key];
+                        connection.on(key, clientMethod);
+                    }
                 }
             }
 
-        connection.onclose(function (error) {
-            $log.log('Connection Closed', hubName);
-            if(error)
-                $log.error(error);
-            callStateChanged(Hub.connectionStates.disconnected);
-        });
+        }
+        function bindOnOffListeners() {
+            onOffList.map(function (x) {
+                connection.on(x.method, x.handler);
+            });
+        }
+
+
 
         this.start = function () {
+
+            if (connection === null || connection.connection.connectionState !== 0) {
+                connection = new signalR.HubConnection(buildHubUrl());
+                connection.onclose(function (error) {
+                    $log.log('Connection Closed', hubName);
+                    if (error)
+                        $log.error(error);
+                    callStateChanged(Hub.connectionStates.disconnected);
+                });
+                bindListeners();
+                bindOnOffListeners();
+            }
+
             return connection.start().then(function () {
                 callStateChanged(Hub.connectionStates.connected);
-            }, function (err) {
-                throw err;
+            }, function (err) {               
+                $log.error(err);
+                if (options.autoReconnect) {
+                   $timeout(function () {
+                        me.start();
+                    }, options.reconnectTimeout || 1000);
+                } else {
+                    throw err;
+                }
             });
         };
 
-        this.isConnected = function(){
-            return connection.connection.connectionState === 2;
+        this.stop = function () {
+            if (connection === null)
+                return;
+            stopRequested = true;
+            connection.stop();
+        }
+
+        this.isConnected = function () {
+            return connection && connection.connection.connectionState === 2;
         }
         this.on = function (method, handler) {
-            connection.on(method, handler);
+            if (connection)
+                connection.on(method, handler);
+            onOffList.push({
+                method: method, handler: handler
+            });
         }
         this.off = function (method, handler) {
-            connection.off(method, handler);
+            if (connection)
+                connection.off(method, handler);
+
+            var index = onOffList.findIndex(function (x) {
+                return x.method === method && x.handler === handler;
+            });
+
+            if (index >= 0)
+                onOffList.splice(index, 1);
         }
+
+        if (options.autoStart)
+            this.start();
     };
 
     Hub.connectionStates = {
         connecting: 'connecting',
         connected: 'connected',
-        // TODO: handle reconnections
         reconnecting: 'reconnecting',
         disconnected: 'disconnected'
     };
-   return Hub;
+    return Hub;
 });

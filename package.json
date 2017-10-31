@@ -1,7 +1,7 @@
 {
   "name": "angular-signalr-core-hub",
   "description": "A SignalR Core compatible reimplementation of `angular-signalr-hubs",
-  "version": "1.0.0-alpha2-final",
+  "version": "0.1.0",
   "main": "hub.js",
   "devDependencies": {
     "@aspnet/signalr-client": "^1.0.0-alpha2-final",
