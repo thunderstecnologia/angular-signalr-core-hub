@@ -104,11 +104,11 @@ angular.module('SignalR', []).factory('Hub', function ($q, $log, $timeout) {
                 bindOnOffListeners();
             }
 
-            return connection.start().then(function () {
+			return connection.start().then(function () {
                 callStateChanged(Hub.connectionStates.connected);
             }, function (err) {               
                 $log.error(err);
-                if (options.autoReconnect) {
+                if (err.statusCode >= 500 && options.autoReconnect) {
                    $timeout(function () {
                         me.start();
                     }, options.reconnectTimeout || 1000);
