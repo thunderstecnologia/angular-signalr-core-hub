@@ -52,17 +52,17 @@ This section further details the available options, methods and programming styl
 ## Options
 
 The accepted options are:
-## General Options
+### General Options
 * **rootPath (String)**: The URL prefix of all hubs in your application. This will be concatenated with `hubName` to form the final URL so if your hub class is called `ProductsHub` and it is mapped to `/signalr/products` in your project's `Startup` class then the root path will be `http://localhost:5555/signalr` without `products` in the end.
 * **queryParams (Object)**: key-value object with query string data to be passed to SignalR. Remember the SignalR Client SDK is not writen in AngularJS so your app's `$http` interceptor will have no effect on SignalR connections, making query string a considerable way to pass session state from your app to SignalR.
 * **stateChanged (Function(newState)**: this function is called every time the SignalR connection's state changes. It is passed one argument with two properties: `newState`, which is the current state, and `oldState` which is the previous state of the connection, or null.
 
-## Connection / Reconnection Options
+### Connection / Reconnection Options
 * **autoStart (Boolean)**: automatically calls `start()` after initializing
 * **autoReconnect (Boolean)**: automatically handles reconnections and subscribing again after a reconnection. We recommend setting this to true.
 * **reconnectTimeout (Number)**: value passed to `$timeout` before reconnecting. The default value is `1000` (one second) but we recommend increasing this value in production to five seconds.
 
-## Methods and Listeners
+### Methods and Listeners
 
 * **methods (String[])**: list of your hub's operation names. These will become methods in the Hub class and will pass any list of parameters to your Hub. **Important!** SignalR Core will close the connection if you send invalid number of parameters or parameters of the wrong type. If your app disconnects just after sending a certain type of message check the WebSocket frames in your browser's console or the Debug Output window in Visual Studio.
 * **listeners (keys -> functions)**: object containing callbacks to the methods in your Hub's client interface. These will be passed directly to SignalR Client by calling SignalR's `HubConnection`'s `on` method. 
