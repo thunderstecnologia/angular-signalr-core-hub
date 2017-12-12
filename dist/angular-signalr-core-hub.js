@@ -4630,7 +4630,7 @@ if (hadRuntime) {
 
 },{}]},{},[6])(6)
 });
-angular.module('SignalR', []).factory('Hub', function ($q, $log, $timeout) {
+angular.module('SignalR', []).factory('Hub', ["$q", "$log", "$timeout", function ($q, $log, $timeout) {
     "use strict";
     var Hub = function (hubName, options) {
         var me = this;
@@ -4790,4 +4790,4 @@ angular.module('SignalR', []).factory('Hub', function ($q, $log, $timeout) {
         disconnected: 'disconnected'
     };
     return Hub;
-});
+}]);

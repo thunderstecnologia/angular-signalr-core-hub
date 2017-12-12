@@ -21,12 +21,12 @@ gulp.task('build', ['clean'], () => {
     return gulp.src(['node_modules/@aspnet/signalr-client/dist/browser/signalr-clientES5-*[!min].js', 'hub.js'])
             .pipe(debug())
             .pipe(concat(paths.mainFile))
+            .pipe(ngAnnotate())
             .pipe(gulp.dest('dist'));
 });
 gulp.task('build-min', ['build'], () => {
     return gulp.src(paths.mainPath)
             .pipe(debug())
-            .pipe(ngAnnotate())
             .pipe(uglify())
             .pipe(rename(paths.minFile))
             .pipe(gulp.dest('dist'));
