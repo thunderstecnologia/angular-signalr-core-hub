@@ -1,7 +1,7 @@
 {
   "name": "angular-signalr-core-hub",
   "authors": [
-    "Fábio Gusmão <fabio.gusmao@gmail.com>"
+    "Thunders <suporte@thunders.com.br>"
   ],
   "description": "A SignalR Core compatible reimplementation of `angular-signalr-hubs`.",
   "main": "dist/angular-signalr-core-hub.js",
@@ -12,7 +12,7 @@
     "aspnet"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/fabiogusmao/angular-signalr-core-hub",
+  "homepage": "https://github.com/thundersenergia/angular-signalr-core-hub",
   "ignore": [
     "**/.*",
     "node_modules",
