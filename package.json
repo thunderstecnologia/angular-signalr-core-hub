@@ -4,7 +4,7 @@
   "version": "0.1.1",
   "main": "hub.js",
   "devDependencies": {
-    "@aspnet/signalr-client": "^1.0.0-alpha2-final",
+    "@aspnet/signalr-client": "^1.0.0-preview1-28042",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
     "gulp-concat": "^2.6.1",
@@ -28,5 +28,6 @@
   ],
   "author": "suporte@thunders.com.br",
   "license": "MIT",
-  "homepage": "https://github.com/thundersenergia/angular-signalr-core-hub"
+  "homepage": "https://github.com/thundersenergia/angular-signalr-core-hub",
+  "dependencies": {}
 }
