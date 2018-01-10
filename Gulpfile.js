@@ -18,7 +18,7 @@ gulp.task('clean', () => {
     return gulp.src('dist').pipe(clean());
 });
 gulp.task('build', ['clean'], () => {
-    return gulp.src(['node_modules/@aspnet/signalr-client/dist/browser/signalr-clientES5-*[!min].js', 'hub.js'])
+    return gulp.src(['node_modules/@aspnet/signalr-client/dist/browser/signalr-clientES5.js', 'hub.js'])
             .pipe(debug())
             .pipe(concat(paths.mainFile))
             .pipe(ngAnnotate())
