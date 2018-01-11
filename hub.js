@@ -126,7 +126,7 @@ angular.module('SignalR', []).factory('Hub', function ($q, $log, $timeout) {
         }
 
         this.isConnected = function () {
-            return connection && connection.connection.connectionState === 2;
+            return connection && connection.connection.connectionState === 1;
         }
         this.on = function (method, handler) {
             if (connection)
