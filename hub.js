@@ -97,29 +97,25 @@ angular.module('SignalR', []).factory('Hub', function ($q, $log, $timeout) {
                 transport = { transport: signalR.TransportType.WebSockets };
             }
 
-            if (connection === null || connection.connection.connectionState !== 0) {
-                connection = new signalR.HubConnection(buildHubUrl(), transport);
-                connection.onclose(function (error) {
-                    $log.log('Connection Closed', hubName);
-                    if (error)
-                        $log.error(error);
-                    callStateChanged(Hub.connectionStates.disconnected);
-                });
-                bindListeners();
-                bindOnOffListeners();
-            }
+            connection = new signalR.HubConnection(buildHubUrl(), transport);
+            connection.onclose(function (error) {
+                $log.log('Connection Closed', hubName);
+                if (error)
+                    $log.error(error);
+                callStateChanged(Hub.connectionStates.disconnected);
+            });
+            bindListeners();
+            bindOnOffListeners();
 
-			return connection.start().then(function () {
+
+            return connection.start().then(function () {
                 callStateChanged(Hub.connectionStates.connected);
-            }, function (err) {               
-                $log.error(err);
-                if (err.statusCode >= 500 && options.autoReconnect) {
-                   $timeout(function () {
-                        me.start();
-                    }, options.reconnectTimeout || 1000);
-                } else {
-                    throw err;
-                }
+            }, function () {
+                $log.error('Connection to SignalR Hub ' + hubName + ' failed!');
+                if (previousState === null)
+                    throw Error("Error connecting to SignalR!");
+                else
+                    callStateChanged(Hub.connectionStates.disconnected);
             });
         };
 
