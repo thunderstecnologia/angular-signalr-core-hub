@@ -5079,9 +5079,14 @@ angular.module('SignalR', []).factory('Hub', ["$q", "$log", "$timeout", function
 
 
         this.start = function () {
+            var supportsWebSockets = 'WebSocket' in window || 'MozWebSocket' in window;
+            var transport = undefined;
+            if (options.forceWebSocket && supportsWebSockets) {
+                transport = { transport: signalR.TransportType.WebSockets };
+            }
 
             if (connection === null || connection.connection.connectionState !== 0) {
-                connection = new signalR.HubConnection(buildHubUrl());
+                connection = new signalR.HubConnection(buildHubUrl(), transport);
                 connection.onclose(function (error) {
                     $log.log('Connection Closed', hubName);
                     if (error)
