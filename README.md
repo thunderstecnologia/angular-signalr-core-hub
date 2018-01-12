@@ -57,6 +57,12 @@ The accepted options are:
 * **queryParams (Object)**: key-value object with query string data to be passed to SignalR. Remember the SignalR Client SDK is not writen in AngularJS so your app's `$http` interceptor will have no effect on SignalR connections, making query string a considerable way to pass session state from your app to SignalR.
 * **stateChanged (Function(newState)**: this function is called every time the SignalR connection's state changes. It is passed one argument with two properties: `newState`, which is the current state, and `oldState` which is the previous state of the connection, or null.
 
+### Transport Options
+
+* **forceWebSocket (Boolean)**: instructs the SignalR Client SDK to skip transport negotiation entirely when WebSockets are available on the browser. 
+    * This helps solve an issue when connecting to a load balanced server and connections are dropped because the negoatiation POST request is handled by one machine and the actual WebSocket connection is handled by another and the machine receiving the WebSocket connection does not recognize the **connectionId** returned by the negotiation request. Using Redis as ScaleOut backend on the server does not prevent this behavior at this time.
+    * Browsers that do not support WebSocket, like Internet Explorer 11, won't be affacted by this option and will always request transport negotiation as if this was set `false`.
+
 ### Connection / Reconnection Options
 * **autoStart (Boolean)**: automatically calls `start()` after initializing
 * **autoReconnect (Boolean)**: automatically handles reconnections and subscribing again after a reconnection. We recommend setting this to true.
