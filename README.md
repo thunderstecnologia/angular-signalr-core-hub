@@ -1,9 +1,12 @@
+# Prerequisites
+
+As of version **0.2.x** we are using SignalR Core's [DEV channel](https://dotnet.myget.org/gallery/aspnetcore-dev) builds. This means we are packing in the [preview1](https://dotnet.myget.org/feed/aspnetcore-dev/package/npm/@aspnet/signalr-client) Client SDK. This means your server must also be running [preview1 NuGet packages](https://dotnet.myget.org/feed/aspnetcore-dev/package/nuget/Microsoft.AspNetCore.SignalR) in order to work with these newer releases.
+
 # Installation
 
 ## Bower
 
     bower install angular-signalr-core-hub
-
 # Usage
 
 1. Add `SignalR` as a dependency in your AngularJS app:
