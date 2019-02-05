@@ -10,9 +10,9 @@ As of version **0.2.x** we are using SignalR Core's [DEV channel](https://dotnet
 # Usage
 
 1. Add `SignalR` as a dependency in your AngularJS app:
-
+```javascript
     angular.module('test', ['SignalR'])
-
+```
 2. Inject `Hub` in your controller or service. This service has similar interface to `angular-signalr-hub`'s own `Hub` service.
 
 3. Define your `Hub` object and properties as follows:
