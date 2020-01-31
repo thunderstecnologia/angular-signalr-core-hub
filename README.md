@@ -1,7 +1,8 @@
-# Prerequisites
+# New Version!
 
-As of version **0.2.x** we are using SignalR Core's [DEV channel](https://dotnet.myget.org/gallery/aspnetcore-dev) builds. This means we are packing in the [preview1](https://dotnet.myget.org/feed/aspnetcore-dev/package/npm/@aspnet/signalr-client) Client SDK. This means your server must also be running [preview1 NuGet packages](https://dotnet.myget.org/feed/aspnetcore-dev/package/nuget/Microsoft.AspNetCore.SignalR) in order to work with these newer releases.
+We finally upgraded the SignalR Client SDK we use from `1.0.0-preview1` to the current (at time of writing) `1.1.4` SDK in order to make the library compatible with the current version of SignalR. 
 
+If you still need the older releases install version `0.2.3` which is the last one we published back then.
 # Installation
 
 ## Bower
